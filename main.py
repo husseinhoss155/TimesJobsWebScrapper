@@ -27,6 +27,8 @@ for job in jobs:
     company_name = job.find('h3',class_='joblist-comp-name').text.replace('\r','').replace('\n','').strip()
     skills = job.find('span',class_='srp-skills').text.replace('\r','').replace('\n','').strip()
     pub_date = job.find('span',class_='sim-posted').text.replace('\r','').replace('\n','').strip()
+    if pub_date[0] == 'W':
+        pub_date = pub_date.split('Home',1)[1].strip()
     link = job.find('a').get('href')
 
     #Writing the info to the dataframe
@@ -48,7 +50,7 @@ with pd.ExcelWriter("Jobs.xlsx") as writer:
     df.to_excel(writer, sheet_name="MySheet")
     auto_adjust_xlsx_column_width(df, writer, sheet_name="MySheet", margin=0)
 
-#Opneing the excel file
+#Openeing the excel file
 absolutePath = Path('Jobs.xlsx').resolve()
 os.system(f'start Jobs.xlsx "{absolutePath}"')
 
